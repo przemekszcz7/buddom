@@ -1,0 +1,6 @@
+{
+  "name": "BUD-DOM Robert Książyk",
+  "description": "Roboty budowlane związane ze wznoszeniem budynków mieszkalnych. BUD-DOM Robert Książyk. Nowe Grochale, pow. nowodworski, woj. mazowieckie.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

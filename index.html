@@ -1,0 +1,1335 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    
+    <!-- Global Script Error Guard: Suppresses noisy third-party iframe / cross-origin errors -->
+    <script>
+      window.addEventListener('error', function(event) {
+        if (event.message === 'Script error.' || !event.filename) {
+          event.stopImmediatePropagation();
+          event.preventDefault();
+          return true;
+        }
+      }, true);
+    </script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BUD-DOM Robert Książyk – Budownictwo Mieszkaniowe · Mazowieckie</title>
+    <meta name="description" content="Roboty budowlane związane ze wznoszeniem budynków mieszkalnych. BUD-DOM Robert Książyk. Nowe Grochale, pow. nowodworski, woj. mazowieckie." />
+    
+    <!-- Favicon: Inline SVG of "BD" letters in White on Blueprint Blue Square -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%231A5C96'/%3E%3Ctext x='50' y='64' font-family='&quot;Barlow Condensed&quot;, sans-serif' font-weight='800' font-size='52' fill='%23FFFFFF' text-anchor='middle' letter-spacing='-0.03em'%3EBD%3C/text%3E%3C/svg%3E" />
+
+    <!-- Typography Import from Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500&family=Barlow+Condensed:wght@500;600;700;800&family=Fjalla+One&display=swap" rel="stylesheet">
+
+    <style>
+      /* --- GLOBAL VARIABLES & THEME --- */
+      :root {
+        --page: #F2F0ED;          /* dry concrete / cement */
+        --surface: #FAFAF8;       /* off-white card surface */
+        --dark: #16140F;          /* structural steel shadow */
+        --charcoal: #2C2A24;      /* dark surface */
+        --stone: #5A5650;         /* secondary text */
+        --dust: #9A9690;          /* muted/captions */
+        --rule: #D8D4CC;          /* border light */
+        --rule-dark: rgba(255, 255, 255, 0.08); /* border dark */
+        --accent: #1A5C96;        /* blueprints/sky structural blue */
+        --accent-light: #2A7ABE;  /* hover blue */
+        --warm-white: #F8F6F2;
+        --text: #1A1812;
+        --muted: #9A9690;
+
+        --font-serif: 'Fjalla One', sans-serif;
+        --font-condensed: 'Barlow Condensed', sans-serif;
+        --font-sans: 'Barlow', sans-serif;
+      }
+
+      /* --- RESET & FOUNDATION --- */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        border-radius: 0 !important; /* Load-bearing square corners */
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        background-color: var(--page);
+        color: var(--text);
+        font-family: var(--font-sans);
+        font-weight: 400;
+        line-height: 1.75;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+        transition: all 0.3s ease;
+      }
+
+      button {
+        transition: all 0.3s ease;
+      }
+
+      /* --- SPATIAL RULES & LAYOUT --- */
+      section {
+        padding: 108px 0;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 1160px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+
+      /* All light rules */
+      .rule-light {
+        border: none;
+        border-top: 1px solid var(--rule);
+        margin: 0;
+      }
+
+      /* --- TYPOGRAPHY ARCHETYPE --- */
+      h1 {
+        font-family: var(--font-serif);
+        font-weight: 400;
+        font-size: clamp(5rem, 14vw, 12rem);
+        letter-spacing: 0.01em;
+        line-height: 0.88;
+      }
+
+      h2 {
+        font-family: var(--font-condensed);
+        font-weight: 800;
+        font-size: clamp(2.2rem, 5vw, 4rem);
+        letter-spacing: -0.01em;
+        line-height: 0.95;
+        color: var(--dark);
+      }
+
+      h3 {
+        font-family: var(--font-condensed);
+        font-weight: 700;
+        font-size: 1.3rem;
+        letter-spacing: 0.01em;
+        color: var(--dark);
+      }
+
+      .section-label {
+        font-family: var(--font-condensed);
+        font-weight: 600;
+        font-size: 0.72rem;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--accent);
+        display: block;
+        margin-bottom: 24px;
+      }
+
+      .blue-line {
+        border: none;
+        border-top: 3px solid var(--accent);
+        width: 56px;
+        margin: 14px 0 24px 0;
+      }
+
+      /* Technical / Address data alignment */
+      .tech-data {
+        font-family: var(--font-sans);
+        font-weight: 500;
+        color: var(--text);
+      }
+
+      /* --- STICKY NAVIGATION --- */
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        background-color: var(--dark);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+        height: 80px;
+      }
+
+      .nav-inner {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 100%;
+      }
+
+      .brand {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .brand-title {
+        font-family: var(--font-condensed);
+        font-weight: 800;
+        font-size: 1.2rem;
+        letter-spacing: 0.08em;
+        color: var(--warm-white);
+        line-height: 1;
+      }
+
+      .brand-subtitle {
+        font-family: var(--font-sans);
+        font-weight: 300;
+        font-size: 0.8rem;
+        color: var(--dust);
+        margin-top: 4px;
+      }
+
+      .nav-right-container {
+        display: flex;
+        align-items: center;
+        gap: 28px;
+      }
+
+      .nav-menu {
+        display: flex;
+        gap: 28px;
+        list-style: none;
+      }
+
+      .nav-link {
+        font-family: var(--font-condensed);
+        font-weight: 600;
+        font-size: 0.875rem;
+        letter-spacing: 0.1em;
+        color: var(--dust);
+        text-transform: uppercase;
+      }
+
+      .nav-link:hover {
+        color: var(--warm-white);
+      }
+
+      .nav-cta-btn {
+        background-color: var(--accent);
+        color: #FFFFFF;
+        padding: 8px 18px;
+        font-family: var(--font-condensed);
+        font-weight: 600;
+        font-size: 0.85rem;
+        letter-spacing: 0.02em;
+        border: none;
+        cursor: pointer;
+      }
+
+      .nav-cta-btn:hover {
+        background-color: var(--accent-light);
+      }
+
+      /* Mobile hamburger button */
+      .burger-menu-btn {
+        display: none;
+        background: none;
+        border: none;
+        color: var(--warm-white);
+        font-size: 1.8rem;
+        cursor: pointer;
+        padding: 4px;
+        line-height: 1;
+      }
+
+      /* Fullscreen Overlay Menu */
+      .mobile-menu-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: var(--dark);
+        z-index: 2000;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.35s ease;
+      }
+
+      .mobile-menu-overlay.active {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .mobile-menu-close {
+        position: absolute;
+        top: 24px;
+        right: 24px;
+        background: none;
+        border: none;
+        color: var(--warm-white);
+        font-size: 2.2rem;
+        cursor: pointer;
+      }
+
+      .mobile-menu-links {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 28px;
+        list-style: none;
+      }
+
+      .mobile-menu-link {
+        font-family: var(--font-condensed);
+        font-weight: 700;
+        font-size: 2.2rem;
+        color: var(--dust);
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+      }
+
+      .mobile-menu-link:hover {
+        color: var(--warm-white);
+      }
+
+      /* --- HERO SECTION --- */
+      .hero {
+        position: relative;
+        height: calc(100vh - 80px);
+        min-height: 600px;
+        background-color: var(--dark);
+        overflow: hidden;
+        padding: 0;
+        display: flex;
+        align-items: flex-end;
+      }
+
+      .hero-blueprint-texture {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: 
+          repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.015) 0px, rgba(255, 255, 255, 0.015) 1px, transparent 1px, transparent 80px),
+          repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.015) 0px, rgba(255, 255, 255, 0.015) 1px, transparent 1px, transparent 80px);
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      .hero-content-wrapper {
+        width: 100%;
+        padding: 0 max(40px, 6vw) max(80px, 11vh);
+        position: relative;
+        z-index: 2;
+      }
+
+      .hero-thick-line {
+        border-bottom: 4px solid var(--accent);
+        width: 72px;
+        margin: 18px 0;
+      }
+
+      .hero-title-main {
+        color: var(--warm-white);
+        margin-bottom: 24px;
+      }
+
+      .hero-indent-offset {
+        display: inline-block;
+        margin-left: clamp(2rem, 5vw, 6rem);
+      }
+
+      .hero-description-text {
+        font-family: var(--font-sans);
+        font-weight: 300;
+        font-size: 1.05rem;
+        color: rgba(255, 255, 255, 0.5);
+        max-width: 460px;
+        line-height: 1.75;
+        margin-bottom: 32px;
+      }
+
+      .hero-action-links {
+        display: flex;
+        gap: 24px;
+        align-items: center;
+      }
+
+      .hero-link-accent {
+        font-family: var(--font-condensed);
+        font-weight: 700;
+        font-size: 1rem;
+        color: var(--accent);
+        letter-spacing: 0.02em;
+      }
+
+      .hero-link-accent:hover {
+        color: var(--warm-white);
+      }
+
+      .hero-link-muted {
+        font-family: var(--font-sans);
+        font-weight: 400;
+        font-size: 1rem;
+        color: rgba(255, 255, 255, 0.3);
+      }
+
+      .hero-link-muted:hover {
+        color: rgba(255, 255, 255, 0.65);
+      }
+
+      /* Hero Side/Bg Texture decorations */
+      .hero-vertical-sideway-text {
+        position: absolute;
+        top: 40px;
+        right: 40px;
+        writing-mode: vertical-rl;
+        transform: rotate(180deg);
+        font-family: var(--font-sans);
+        font-weight: 300;
+        color: rgba(255, 255, 255, 0.1);
+        font-size: 0.7rem;
+        letter-spacing: 0.2rem;
+        z-index: 1;
+        user-select: none;
+      }
+
+      .hero-massive-bg-num {
+        position: absolute;
+        bottom: 0px;
+        right: 40px;
+        font-family: var(--font-serif);
+        font-size: 18rem;
+        line-height: 1;
+        color: rgba(255, 255, 255, 0.03);
+        user-select: none;
+        z-index: 1;
+      }
+
+      /* --- ABOUT SECTION --- */
+      .about-section {
+        background-color: var(--surface);
+        border-bottom: 2px solid var(--rule);
+      }
+
+      .about-columns {
+        display: grid;
+        grid-template-columns: 58fr 42fr;
+        gap: 80px;
+      }
+
+      .about-col-left {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .about-lead-paragraphs {
+        margin-bottom: 40px;
+      }
+
+      .about-lead-paragraphs p {
+        font-family: var(--font-sans);
+        font-weight: 400;
+        font-size: 1rem;
+        color: var(--stone);
+        line-height: 1.75;
+        margin-bottom: 20px;
+      }
+
+      .about-lead-paragraphs p:last-child {
+        margin-bottom: 0;
+      }
+
+      .features-divider-top {
+        border-top: 1px solid var(--rule);
+      }
+
+      .feature-block-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 18px 0;
+        border-bottom: 1px solid var(--rule);
+      }
+
+      .feature-row-title {
+        font-family: var(--font-condensed);
+        font-weight: 700;
+        font-size: 1.05rem;
+        color: var(--dark);
+      }
+
+      .feature-row-desc {
+        font-family: var(--font-sans);
+        font-weight: 400;
+        font-size: 0.9rem;
+        color: var(--dust);
+        text-align: right;
+      }
+
+      /* About Right / Stats */
+      .about-col-right {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .about-stats-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+
+      .stat-grid-card {
+        background-color: var(--page);
+        border: 1px solid var(--rule);
+        padding: 28px 24px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .stat-card-title {
+        font-family: var(--font-serif);
+        font-size: 3.5rem;
+        color: var(--accent);
+        line-height: 1;
+        margin-bottom: 8px;
+        word-break: break-all;
+      }
+
+      .stat-card-subtitle {
+        font-family: var(--font-sans);
+        font-weight: 400;
+        font-size: 0.85rem;
+        color: var(--dust);
+      }
+
+      /* Dark Address Card */
+      .dark-address-card {
+        background-color: var(--dark);
+        padding: 24px 28px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .dark-address-line1 {
+        font-family: var(--font-condensed);
+        font-weight: 700;
+        font-size: 1rem;
+        color: var(--warm-white);
+      }
+
+      .dark-address-line2 {
+        font-family: var(--font-sans);
+        font-weight: 300;
+        font-size: 0.85rem;
+        color: var(--dust);
+        margin-top: 6px;
+      }
+
+      /* --- SERVICES SECTION --- */
+      .services-section {
+        background-color: var(--page);
+      }
+
+      .services-stagger-list {
+        border-top: 2px solid var(--rule);
+        margin-top: 40px;
+      }
+
+      .services-item-row {
+        display: flex;
+        align-items: center;
+        padding: 28px 0;
+        border-bottom: 1px solid var(--rule);
+        cursor: default;
+        transition: background-color 0.3s ease;
+      }
+
+      .services-item-row:hover {
+        background-color: #ECEAE6;
+      }
+
+      .service-row-num {
+        font-family: var(--font-serif);
+        font-size: 3.5rem;
+        color: var(--rule);
+        line-height: 1;
+        min-width: 100px;
+        transition: color 0.3s ease;
+      }
+
+      .services-item-row:hover .service-row-num {
+        color: var(--accent);
+      }
+
+      .service-row-title {
+        font-family: var(--font-condensed);
+        font-weight: 700;
+        font-size: 1.1rem;
+        color: var(--dark);
+        flex: 1;
+        padding: 0 48px;
+      }
+
+      .service-row-description {
+        font-family: var(--font-sans);
+        font-weight: 400;
+        font-size: 0.9rem;
+        color: var(--dust);
+        text-align: right;
+        max-width: 300px;
+      }
+
+      /* Under List Bottom Banner Strip */
+      .services-bottom-accent-strip {
+        background-color: var(--accent);
+        padding: 28px 48px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 40px;
+      }
+
+      .accent-strip-text {
+        font-family: var(--font-condensed);
+        font-weight: 700;
+        font-style: italic;
+        font-size: 1.1rem;
+        color: #FFFFFF;
+      }
+
+      .accent-strip-cta-btn {
+        font-family: var(--font-condensed);
+        font-weight: 600;
+        font-size: 1rem;
+        color: #FFFFFF;
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        padding: 8px 20px;
+        background: none;
+        cursor: pointer;
+      }
+
+      .accent-strip-cta-btn:hover {
+        border-color: #FFFFFF;
+        background-color: rgba(255, 255, 255, 0.08);
+      }
+
+      /* --- SERVICE AREA SECTION --- */
+      .service-area-section {
+        background-color: var(--dark);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .area-columns-layout {
+        display: grid;
+        grid-template-columns: 45fr 55fr;
+        gap: 80px;
+      }
+
+      .area-col-left {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .area-paragraphs-desc {
+        font-family: var(--font-sans);
+        font-weight: 400;
+        color: rgba(255, 255, 255, 0.55);
+        font-size: 1rem;
+        line-height: 1.75;
+        margin-bottom: 24px;
+      }
+
+      .area-accent-callout-card {
+        border-left: 2px solid var(--accent);
+        padding-left: 20px;
+        font-family: var(--font-condensed);
+        font-weight: 700;
+        color: var(--warm-white);
+        font-size: 1.1rem;
+        line-height: 1.4;
+      }
+
+      .area-col-right {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .area-spec-detail-row {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+        padding: 18px 0;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .area-detail-tag-label {
+        font-family: var(--font-condensed);
+        font-weight: 600;
+        color: var(--accent);
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+      }
+
+      .area-detail-tag-value {
+        font-family: var(--font-sans);
+        font-weight: 500;
+        font-size: 1rem;
+        color: var(--warm-white);
+      }
+
+      /* --- CONTACT SECTION --- */
+      .contact-section {
+        background-color: var(--surface);
+        border-top: 2px solid var(--rule);
+      }
+
+      .contact-columns-layout {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 72px;
+      }
+
+      .contact-col-left {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .contact-paragraph-description {
+        font-family: var(--font-sans);
+        font-weight: 400;
+        color: var(--stone);
+        font-size: 1rem;
+        line-height: 1.75;
+        margin-bottom: 32px;
+      }
+
+      .contact-stacked-rows {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 32px;
+      }
+
+      .contact-information-row {
+        border-bottom: 1px solid var(--rule);
+        padding: 20px 0;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .contact-info-label {
+        font-family: var(--font-condensed);
+        font-weight: 600;
+        font-size: 0.7rem;
+        color: var(--dust);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+      }
+
+      .contact-info-value {
+        font-family: var(--font-condensed);
+        font-weight: 700;
+        font-size: 1.25rem;
+        color: var(--dark);
+      }
+
+      /* Card layout for direct directions guide */
+      .contact-accent-instructions-block {
+        background-color: var(--accent);
+        padding: 24px 28px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .contact-instructions-title {
+        font-family: var(--font-condensed);
+        font-weight: 700;
+        color: #FFFFFF;
+        font-size: 1.1rem;
+      }
+
+      .contact-instructions-subtext {
+        font-family: var(--font-sans);
+        font-weight: 300;
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 0.875rem;
+        margin-top: 8px;
+        line-height: 1.5;
+      }
+
+      /* Map Container Frame */
+      .contact-col-right {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .google-map-iframe-container {
+        border: 3px solid var(--dark);
+        width: 100%;
+        height: 420px;
+        overflow: hidden;
+      }
+
+      /* --- FOOTER CARD --- */
+      footer {
+        background-color: #0C0B07;
+        border-top: 3px solid var(--accent);
+        padding: 32px 0;
+      }
+
+      .footer-inner-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .footer-text-brand {
+        font-family: var(--font-condensed);
+        font-weight: 800;
+        font-size: 1.1rem;
+        letter-spacing: 0.08em;
+        color: var(--warm-white);
+      }
+
+      .footer-text-signature {
+        font-family: var(--font-sans);
+        font-weight: 300;
+        font-size: 0.9rem;
+        color: var(--dust);
+      }
+
+      .footer-text-copyright {
+        font-family: var(--font-sans);
+        font-weight: 300;
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.2);
+      }
+
+      .footer-divider-thin {
+        border: none;
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+        margin: 14px 0;
+      }
+
+      .footer-inner-bottom {
+        text-align: center;
+        font-family: var(--font-sans);
+        font-weight: 300;
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.2);
+      }
+
+
+      /* --- INTERACTIVE SCROLL REVEALS --- */
+      /* Base structure */
+      .reveal-target {
+        opacity: 0;
+        transform: translateY(10px);
+        transition: opacity 0.45s ease, transform 0.45s ease;
+      }
+
+      .reveal-target.revealed {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* Services stagger list has individual rows that will get revealed */
+      .services-item-row {
+        opacity: 0;
+        transform: translateY(10px);
+        transition: opacity 0.45s ease, transform 0.45s ease, background-color 0.3s ease;
+      }
+
+      .services-item-row.revealed {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* Stats grid block cards revealed together */
+      .stat-grid-card {
+        opacity: 0;
+        transform: translateY(10px);
+        transition: opacity 0.45s ease, transform 0.45s ease;
+      }
+
+      .stat-grid-card.revealed {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+
+      /* --- RESPONSIVE MEDIA QUERIES --- */
+      @media (max-width: 991px) {
+        section {
+          padding: 80px 0;
+        }
+
+        .nav-menu {
+          display: none;
+        }
+
+        .burger-menu-btn {
+          display: block;
+        }
+
+        .about-columns {
+          grid-template-columns: 1fr;
+          gap: 48px;
+        }
+
+        .area-columns-layout {
+          grid-template-columns: 1fr;
+          gap: 48px;
+        }
+
+        .contact-columns-layout {
+          grid-template-columns: 1fr;
+          gap: 48px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        body {
+          font-size: 0.95rem;
+        }
+
+        .nav-cta-btn {
+          display: none;
+        }
+
+        .hero-vertical-sideway-text {
+          display: none;
+        }
+
+        .hero-massive-bg-num {
+          display: none;
+        }
+
+        .hero-indent-offset {
+          margin-left: 1rem !important;
+        }
+
+        .services-item-row {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 12px;
+          padding: 24px 0;
+        }
+
+        .service-row-num {
+          font-size: 2rem;
+          min-width: unset;
+        }
+
+        .service-row-title {
+          padding: 0;
+          font-size: 1.1rem;
+        }
+
+        .service-row-description {
+          text-align: left;
+          max-width: 100%;
+        }
+
+        .services-bottom-accent-strip {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 20px;
+          padding: 24px;
+        }
+
+        .footer-inner-top {
+          flex-direction: column;
+          align-items: center;
+          gap: 12px;
+          text-align: center;
+        }
+        
+        .about-stats-grid {
+          gap: 10px;
+        }
+        
+        .stat-grid-card {
+          padding: 20px 16px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+
+    <!-- STICKY SITE HEADER -->
+    <header>
+      <div class="container nav-inner">
+        <!-- BRAND STACKED IDENTITY -->
+        <a href="#" class="brand">
+          <span class="brand-title">BUD-DOM</span>
+          <span class="brand-subtitle">Robert Książyk</span>
+        </a>
+
+        <!-- NAVIGATION RIGHT HAND SYSTEM -->
+        <div class="nav-right-container">
+          <nav>
+            <ul class="nav-menu">
+              <li><a href="#o-firmie" class="nav-link">O Firmie</a></li>
+              <li><a href="#uslugi" class="nav-link">Usługi</a></li>
+              <li><a href="#obszar" class="nav-link">Obszar</a></li>
+              <li><a href="#kontakt" class="nav-link">Kontakt</a></li>
+            </ul>
+          </nav>
+          
+          <a href="#kontakt" class="nav-cta-btn">Zapytaj o wycenę</a>
+
+          <button id="mobileNavToggle" class="burger-menu-btn" aria-label="Menu główne">
+            ≡
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- FULLSCREEN MOBILE OVERLAY MENU -->
+    <div id="mobileOverlay" class="mobile-menu-overlay">
+      <button id="closeBtn" class="mobile-menu-close" aria-label="Zamknij menu">&times;</button>
+      <ul class="mobile-menu-links">
+        <li><a href="#o-firmie" class="mobile-menu-link">O Firmie</a></li>
+        <li><a href="#uslugi" class="mobile-menu-link">Usługi</a></li>
+        <li><a href="#obszar" class="mobile-menu-link">Obszar</a></li>
+        <li><a href="#kontakt" class="mobile-menu-link">Kontakt</a></li>
+        <li><a href="#kontakt" class="mobile-menu-link" style="color: var(--accent);">Zapytaj o wycenę</a></li>
+      </ul>
+    </div>
+
+    <!-- MAIN BODY CONTENT -->
+    <main>
+
+      <!-- SECTION: HERO VIEWPORT -->
+      <section class="hero" id="home">
+        <!-- BLUEPRINT STRUCTURAL BACKGROUND GRID -->
+        <div class="hero-blueprint-texture"></div>
+
+        <div class="hero-content-wrapper">
+          <div class="container" style="padding-left: 0; padding-right: 0;">
+            <p class="hero-label">Mazowieckie · Nowe Grochale</p>
+            <div class="hero-thick-line"></div>
+            
+            <h1 class="hero-title-main">
+              <span>BUD</span><br>
+              <span class="hero-indent-offset">DOM</span>
+            </h1>
+
+            <p class="hero-description-text">
+              Roboty budowlane związane ze wznoszeniem budynków mieszkalnych. Województwo mazowieckie.
+            </p>
+
+            <div class="hero-action-links">
+              <a href="#kontakt" class="hero-link-accent">→ Zapytaj o wycenę</a>
+              <a href="#o-firmie" class="hero-link-muted">→ O firmie</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- SIDE DECORATIVE DETAILS -->
+        <div class="hero-vertical-sideway-text">BUDOWNICTWO MIESZKANIOWE · MAZOWIECKIE</div>
+        <div class="hero-massive-bg-num">19</div>
+      </section>
+
+      <!-- SECTION: 01 ABOUT COMPANY -->
+      <section class="about-section id-anchor" id="o-firmie">
+        <div class="container">
+          <div class="about-columns">
+            
+            <!-- COLUMN: LEFT WRAPPER -->
+            <div class="about-col-left reveal-target">
+              <span class="section-label">01 —— O firmie</span>
+              <h2>Budujemy domy. Solidnie.</h2>
+              <div class="blue-line"></div>
+              
+              <div class="about-lead-paragraphs">
+                <p>
+                  BUD-DOM Robert Książyk to firma budowlana specjalizująca się w wznoszeniu budynków mieszkalnych na terenie województwa mazowieckiego.
+                </p>
+                <p>
+                  Każda realizacja to pełne zaangażowanie — od fundamentów po dach. Pracujemy solidnie, terminowo i z pełną odpowiedzialnością za każdy etap budowy.
+                </p>
+              </div>
+
+              <!-- TABLE OF GENERAL ATTRIBUTES -->
+              <div class="features-divider-top">
+                <div class="feature-block-row">
+                  <span class="feature-row-title">Budownictwo mieszkaniowe</span>
+                  <span class="feature-row-desc">specjalizacja w budynkach mieszkalnych</span>
+                </div>
+                <div class="feature-block-row">
+                  <span class="feature-row-title">Województwo mazowieckie</span>
+                  <span class="feature-row-desc">realizacje na terenie Mazowsza</span>
+                </div>
+                <div class="feature-block-row">
+                  <span class="feature-row-title">Kompleksowo</span>
+                  <span class="feature-row-desc">od projektu do odbioru</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- COLUMN: RIGHT WRAPPER -->
+            <div class="about-col-right">
+
+              <!-- OFFICE BRIEF PROFILE CARD -->
+              <div class="dark-address-card reveal-target">
+                <span class="dark-address-line1">Nowe Grochale 19, 05-155</span>
+                <span class="dark-address-line2">gm. Leoncin, pow. nowodworski, woj. mazowieckie</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION: 02 RANGE OF SERVICES -->
+      <section class="services-section id-anchor" id="uslugi">
+        <div class="container">
+          <span class="section-label">02 —— Zakres prac</span>
+          <h2>Co budujemy</h2>
+
+          <!-- EDITORIAL DETAILED SERVICES LIST -->
+          <div class="services-stagger-list reveal-target services-list">
+            
+            <div class="services-item-row">
+              <span class="service-row-num">01</span>
+              <span class="service-row-title">Wznoszenie budynków mieszkalnych</span>
+              <span class="service-row-description">kompleksowe budowanie domów od podstaw</span>
+            </div>
+
+            <div class="services-item-row">
+              <span class="service-row-num">02</span>
+              <span class="service-row-title">Roboty fundamentowe</span>
+              <span class="service-row-description">wykopy, fundamenty, izolacje podziemne</span>
+            </div>
+
+            <div class="services-item-row">
+              <span class="service-row-num">03</span>
+              <span class="service-row-title">Konstrukcja i ściany</span>
+              <span class="service-row-description">mury, stropy, konstrukcja dachowa</span>
+            </div>
+
+            <div class="services-item-row">
+              <span class="service-row-num">04</span>
+              <span class="service-row-title">Prace wykończeniowe</span>
+              <span class="service-row-description">tynki, posadzki, instalacje</span>
+            </div>
+
+            <div class="services-item-row">
+              <span class="service-row-num">05</span>
+              <span class="service-row-title">Nadzór i realizacja</span>
+              <span class="service-row-description">prowadzenie budowy zgodnie z projektem</span>
+            </div>
+
+            <div class="services-item-row">
+              <span class="service-row-num">06</span>
+              <span class="service-row-title">Wycena i doradztwo</span>
+              <span class="service-row-description">bezpłatna wycena, omówienie zakresu prac</span>
+            </div>
+
+          </div>
+
+          <!-- SPECIALIZED CTA STRIP -->
+          <div class="services-bottom-accent-strip reveal-target">
+            <span class="accent-strip-text">Budujemy domy — to nasza jedyna specjalizacja.</span>
+            <a href="#kontakt" class="accent-strip-cta-btn">Zapytaj o wycenę →</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION: 03 SERVICE GEOGRAPHY AREA -->
+      <section class="service-area-section id-anchor" id="obszar">
+        <!-- BLUEPRINT STRUCTURAL BACKGROUND GRID (SAME AS HERO) -->
+        <div class="hero-blueprint-texture"></div>
+
+        <div class="container" style="position: relative; z-index: 2;">
+          <div class="area-columns-layout">
+            
+            <div class="area-col-left reveal-target">
+              <span class="section-label">03 —— Obszar działania</span>
+              <h2 style="color: var(--warm-white);">Gdzie budujemy</h2>
+              <div class="blue-line"></div>
+              
+              <p class="area-paragraphs-desc">
+                Realizujemy budowy na terenie województwa mazowieckiego ze szczególnym uwzględnieniem powiatu nowodworskiego i okolicznych gmin.
+              </p>
+
+              <div class="area-accent-callout-card">
+                Nowe Grochale i cały powiat nowodworski — jesteśmy stąd.
+              </div>
+            </div>
+
+            <div class="area-col-right reveal-target">
+              <!-- DETAILED ACCENT BLOCKS FOR LOCAL AREA -->
+              <div class="area-spec-detail-row">
+                <span class="area-detail-tag-label">WOJEWÓDZTWO</span>
+                <span class="area-detail-tag-value">Mazowieckie</span>
+              </div>
+              <div class="area-spec-detail-row">
+                <span class="area-detail-tag-label">POWIAT</span>
+                <span class="area-detail-tag-value">Nowodworski</span>
+              </div>
+              <div class="area-spec-detail-row">
+                <span class="area-detail-tag-label">GMINA</span>
+                <span class="area-detail-tag-value">Leoncin</span>
+              </div>
+              <div class="area-spec-detail-row">
+                <span class="area-detail-tag-label">MIEJSCOWOŚĆ</span>
+                <span class="area-detail-tag-value">Nowe Grochale</span>
+              </div>
+              <div class="area-spec-detail-row">
+                <span class="area-detail-tag-label">KOD POCZTOWY</span>
+                <span class="area-detail-tag-value">05-155</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION: 04 CONTACT & GOOGLE MAPS -->
+      <section class="contact-section id-anchor" id="kontakt">
+        <div class="container">
+          <div class="contact-columns-layout">
+            
+            <!-- LEFT COLUMN: DIRECT DETAILS -->
+            <div class="contact-col-left reveal-target">
+              <span class="section-label">04 —— Kontakt</span>
+              <h2>Zapytaj o wycenę.</h2>
+              <div class="blue-line"></div>
+
+              <p class="contact-paragraph-description">
+                Działamy na terenie Mazowsza. Skontaktuj się z nami — omówimy zakres prac, termin i wycenę. Bez ukrytych kosztów.
+              </p>
+
+              <!-- RAW REGISTERED CONTACT DATA -->
+              <div class="contact-stacked-rows">
+                <div class="contact-information-row">
+                  <span class="contact-info-label">FIRMA</span>
+                  <span class="contact-info-value">BUD-DOM Robert Książyk</span>
+                </div>
+                <div class="contact-information-row">
+                  <span class="contact-info-label">ADRES</span>
+                  <span class="contact-info-value">Nowe Grochale 19, 05-155 Nowe Grochale</span>
+                </div>
+                <div class="contact-information-row">
+                  <span class="contact-info-label">LOKALIZACJA</span>
+                  <span class="contact-info-value" style="font-family: var(--font-sans); font-weight: 500; font-size: 1rem; color: var(--stone);">gm. Leoncin, pow. nowodworski, woj. mazowieckie</span>
+                </div>
+              </div>
+
+              <!-- CALL OUT ACTION FRAME -->
+              <div class="contact-accent-instructions-block">
+                <h3 class="contact-instructions-title">Zapytaj o wycenę — odpowiemy.</h3>
+                <p class="contact-instructions-subtext">
+                  Skontaktuj się bezpośrednio przez Google Maps, zapytaj przez mapy lub przyjedź do nas.
+                </p>
+              </div>
+            </div>
+
+            <!-- RIGHT COLUMN: EMBEDDED REAL GOOGLE MAPS IFRAME -->
+            <div class="contact-col-right reveal-target">
+              <div class="google-map-iframe-container">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2433.554849591167!2d20.595066912683233!3d52.41474354389985!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x471eaf1796d10789%3A0xf8e5082b583a3a4c!2sNowe%20Grochale%2019%2C%2005-155%20Nowe%20Grochale!5e0!3m2!1spl!2spl!4v1782195081163!5m2!1spl!2spl" width="100%" height="420" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- FOOTER SYSTEMS -->
+    <footer>
+      <div class="container">
+        <!-- ROW 1 -->
+        <div class="footer-inner-top">
+          <span class="footer-text-brand">BUD-DOM</span>
+          <span class="footer-text-signature">Robert Książyk</span>
+          <span class="footer-text-copyright">© 2026</span>
+        </div>
+
+        <hr class="footer-divider-thin" />
+
+        <!-- ROW 2 -->
+        <div class="footer-inner-bottom">
+          Nowe Grochale 19 · gm. Leoncin · pow. nowodworski · woj. mazowieckie
+        </div>
+      </div>
+    </footer>
+
+    <!-- INTERACTION LOGISTICS -->
+    <script>
+      // Navigation logistics (Mobile overlay toggle)
+      const mobileNavToggle = document.getElementById('mobileNavToggle');
+      const mobileOverlay = document.getElementById('mobileOverlay');
+      const closeBtn = document.getElementById('closeBtn');
+      const mobileMenuLinks = document.querySelectorAll('.mobile-menu-link');
+
+      mobileNavToggle.addEventListener('click', () => {
+        mobileOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden'; // Stop page background scrolling
+      });
+
+      const handleCloseMenu = () => {
+        mobileOverlay.classList.remove('active');
+        document.body.style.overflow = ''; // Restore page background scrolling
+      };
+
+      closeBtn.addEventListener('click', handleCloseMenu);
+
+      mobileMenuLinks.forEach(link => {
+        link.addEventListener('click', handleCloseMenu);
+      });
+
+      // Interactive Intersection Observer scroll reveals
+      const revealTargets = document.querySelectorAll('.reveal-target');
+
+      const revealObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+
+            // Handle editorial services list row staggered delays
+            if (entry.target.classList.contains('services-list')) {
+              const rows = entry.target.querySelectorAll('.services-item-row');
+              rows.forEach((row, i) => {
+                setTimeout(() => {
+                  row.classList.add('revealed');
+                }, i * 55);
+              });
+            }
+
+            // Unobserve target after animation triggered
+            observer.unobserve(entry.target);
+          }
+        });
+      }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -40px 0px'
+      });
+
+      revealTargets.forEach(target => {
+        revealObserver.observe(target);
+      });
+    </script>
+
+    <!-- React root mount point & main entry point to keep bundler fully satisfied -->
+    <div id="root" style="display: none;"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    
+  </body>
+</html>
